@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSN Generator - Dutch Test Numbers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇳🇱 BSN Generator</h1>
+            <p class="subtitle">Generate valid Dutch Burgerservicenummers</p>
+        </header>
+
+        <main>
+            <div class="card generator-card">
+                <button id="generateBtn" class="generate-btn">
+                    Generate BSN
+                </button>
+                
+                <div id="result" class="result">
+                    <span class="label">Latest BSN:</span>
+                    <span id="currentBsn" class="bsn-display">—</span>
+                    <button id="copyBtn" class="copy-btn" title="Copy to clipboard" disabled>
+                        📋
+                    </button>
+                </div>
+            </div>
+
+            <div class="card history-card">
+                <h2>History</h2>
+                <ul id="historyList" class="history-list">
+                    <li class="empty-state">No BSNs generated yet</li>
+                </ul>
+                <button id="clearBtn" class="clear-btn" disabled>
+                    Clear History
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Generated BSNs pass the Dutch 11-test validation.</p>
+            <p class="disclaimer">For testing purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

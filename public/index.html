@@ -3,44 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSN Generator - Dutch Test Numbers</title>
+    <title>Dutch Test Numbers - BSN & IBAN Generator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🇳🇱 BSN Generator</h1>
-            <p class="subtitle">Generate valid Dutch Burgerservicenummers</p>
+            <h1>🇳🇱 Dutch Test Numbers</h1>
+            <p class="subtitle">Generate valid BSN and IBAN numbers for testing</p>
         </header>
 
-        <main>
-            <div class="card generator-card">
-                <button id="generateBtn" class="generate-btn">
-                    Generate BSN
-                </button>
-                
-                <div id="result" class="result">
-                    <span class="label">Latest BSN:</span>
-                    <span id="currentBsn" class="bsn-display">—</span>
-                    <button id="copyBtn" class="copy-btn" title="Copy to clipboard" disabled>
-                        📋
-                    </button>
+        <main class="generators-grid">
+            <!-- BSN Generator -->
+            <section class="generator-section">
+                <div class="card generator-card">
+                    <h2 class="card-title">BSN Generator</h2>
+                    <form id="bsnForm" class="generator-form">
+                        <label for="bsnCount">How many?</label>
+                        <input type="number" id="bsnCount" min="1" max="50" value="1">
+                        <button type="submit" class="generate-btn">
+                            Generate BSN
+                        </button>
+                    </form>
+                    
+                    <div id="bsnResult" class="result">
+                        <span class="label">Latest BSN:</span>
+                        <span id="currentBsn" class="value-display">—</span>
+                        <button id="copyBsnBtn" class="copy-btn" title="Copy to clipboard" disabled>
+                            📋
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card history-card">
-                <h2>History</h2>
-                <ul id="historyList" class="history-list">
-                    <li class="empty-state">No BSNs generated yet</li>
-                </ul>
-                <button id="clearBtn" class="clear-btn" disabled>
-                    Clear History
-                </button>
-            </div>
+                <div class="card history-card">
+                    <h2>BSN History</h2>
+                    <ul id="bsnHistoryList" class="history-list">
+                        <li class="empty-state">No BSNs generated yet</li>
+                    </ul>
+                    <div class="history-actions">
+                        <button id="copyAllBsnBtn" class="action-btn copy-all-btn" disabled>
+                            📋 Copy All
+                        </button>
+                        <button id="eraseBsnBtn" class="action-btn erase-btn" disabled>
+                            🗑️ Erase
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IBAN Generator -->
+            <section class="generator-section">
+                <div class="card generator-card">
+                    <h2 class="card-title">IBAN Generator</h2>
+                    <form id="ibanForm" class="generator-form">
+                        <label for="ibanCount">How many?</label>
+                        <input type="number" id="ibanCount" min="1" max="50" value="1">
+                        <button type="submit" class="generate-btn iban-btn">
+                            Generate IBAN
+                        </button>
+                    </form>
+                    
+                    <div id="ibanResult" class="result">
+                        <span class="label">Latest IBAN:</span>
+                        <span id="currentIban" class="value-display">—</span>
+                        <button id="copyIbanBtn" class="copy-btn" title="Copy to clipboard" disabled>
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card history-card">
+                    <h2>IBAN History</h2>
+                    <ul id="ibanHistoryList" class="history-list">
+                        <li class="empty-state">No IBANs generated yet</li>
+                    </ul>
+                    <div class="history-actions">
+                        <button id="copyAllIbanBtn" class="action-btn copy-all-btn" disabled>
+                            📋 Copy All
+                        </button>
+                        <button id="eraseIbanBtn" class="action-btn erase-btn" disabled>
+                            🗑️ Erase
+                        </button>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer>
-            <p>Generated BSNs pass the Dutch 11-test validation.</p>
+            <p>Generated BSNs pass the Dutch 11-test. IBANs pass modulo 97 validation.</p>
             <p class="disclaimer">For testing purposes only.</p>
         </footer>
     </div>

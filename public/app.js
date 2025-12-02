@@ -21,37 +21,41 @@
      * @returns {string} A valid 9-digit BSN
      */
     function generateBSN() {
-        const digits = [];
-
-        // Generate first 8 random digits
-        for (let i = 0; i < 8; i++) {
-            // First digit should not be 0
-            if (i === 0) {
-                digits.push(Math.floor(Math.random() * 9) + 1);
-            } else {
-                digits.push(Math.floor(Math.random() * 10));
-            }
-        }
-
-        // Calculate the 9th digit to make it pass the 11-test
-        // Formula: (9×d1 + 8×d2 + 7×d3 + 6×d4 + 5×d5 + 4×d6 + 3×d7 + 2×d8 - 1×d9) % 11 === 0
         const weights = [9, 8, 7, 6, 5, 4, 3, 2];
-        let sum = 0;
-        for (let i = 0; i < 8; i++) {
-            sum += digits[i] * weights[i];
+
+        // Use a while loop to avoid potential stack overflow from recursion
+        while (true) {
+            const digits = [];
+
+            // Generate first 8 random digits
+            for (let i = 0; i < 8; i++) {
+                // First digit should not be 0
+                if (i === 0) {
+                    digits.push(Math.floor(Math.random() * 9) + 1);
+                } else {
+                    digits.push(Math.floor(Math.random() * 10));
+                }
+            }
+
+            // Calculate the 9th digit to make it pass the 11-test
+            // Formula: (9×d1 + 8×d2 + 7×d3 + 6×d4 + 5×d5 + 4×d6 + 3×d7 + 2×d8 - 1×d9) % 11 === 0
+            let sum = 0;
+            for (let i = 0; i < 8; i++) {
+                sum += digits[i] * weights[i];
+            }
+
+            // We need: (sum - d9) % 11 === 0
+            // So: d9 = sum % 11 (but d9 must be 0-9)
+            const d9 = sum % 11;
+
+            // If d9 > 9, retry (this happens when sum % 11 === 10)
+            if (d9 > 9) {
+                continue;
+            }
+
+            digits.push(d9);
+            return digits.join('');
         }
-
-        // We need: (sum - d9) % 11 === 0
-        // So: d9 = sum % 11 (but d9 must be 0-9)
-        const d9 = sum % 11;
-
-        // If d9 > 9, regenerate (this happens when sum % 11 === 10)
-        if (d9 > 9) {
-            return generateBSN();
-        }
-
-        digits.push(d9);
-        return digits.join('');
     }
 
     /**

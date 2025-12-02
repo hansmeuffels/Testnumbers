@@ -1,0 +1,19 @@
+{
+  "name": "testnumbers",
+  "version": "1.0.0",
+  "description": "Generate valid Dutch test numbers (BSN and IBAN)",
+  "main": "index.js",
+  "bin": {
+    "testnumbers": "./index.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js"
+  },
+  "keywords": ["bsn", "iban", "dutch", "test", "generator", "netherlands"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}

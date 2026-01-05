@@ -182,13 +182,14 @@
     // Loonheffingennummer Generator Functions
     // ==========================================
 
+    // Weights for modulus-11 validation
+    const LOONHEFFINGENNUMMER_WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2];
+
     /**
      * Generates a valid Loonheffingennummer using the modulus-11 test
      * @returns {string} A valid 9-digit Loonheffingennummer
      */
     function generateLoonheffingennummer() {
-        const weights = [9, 8, 7, 6, 5, 4, 3, 2];
-
         while (true) {
             const digits = [];
 
@@ -202,7 +203,7 @@
 
             let sum = 0;
             for (let i = 0; i < 8; i++) {
-                sum += digits[i] * weights[i];
+                sum += digits[i] * LOONHEFFINGENNUMMER_WEIGHTS[i];
             }
 
             const checkDigit = sum % 11;
@@ -227,11 +228,10 @@
         }
 
         const digits = loonheffingennummer.split('').map(Number);
-        const weights = [9, 8, 7, 6, 5, 4, 3, 2];
 
         let sum = 0;
         for (let i = 0; i < 8; i++) {
-            sum += digits[i] * weights[i];
+            sum += digits[i] * LOONHEFFINGENNUMMER_WEIGHTS[i];
         }
 
         const remainder = sum % 11;

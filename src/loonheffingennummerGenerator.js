@@ -3,6 +3,9 @@
  * Generates valid Dutch payroll tax numbers that pass the modulus-11 test
  */
 
+// Weights for modulus-11 validation
+const LOONHEFFINGENNUMMER_WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2];
+
 /**
  * Validates a Loonheffingennummer using the modulus-11 test
  * @param {string} loonheffingennummer - The number to validate (9 digits)
@@ -14,11 +17,10 @@ function isValidLoonheffingennummer(loonheffingennummer) {
   }
 
   const digits = loonheffingennummer.split('').map(Number);
-  const weights = [9, 8, 7, 6, 5, 4, 3, 2];
   
   let sum = 0;
   for (let i = 0; i < 8; i++) {
-    sum += digits[i] * weights[i];
+    sum += digits[i] * LOONHEFFINGENNUMMER_WEIGHTS[i];
   }
   
   const remainder = sum % 11;
@@ -45,10 +47,9 @@ function generateLoonheffingennummer() {
     }
     
     // Calculate the 9th digit (check digit) using modulus-11
-    const weights = [9, 8, 7, 6, 5, 4, 3, 2];
     let sum = 0;
     for (let i = 0; i < 8; i++) {
-      sum += digits[i] * weights[i];
+      sum += digits[i] * LOONHEFFINGENNUMMER_WEIGHTS[i];
     }
     
     const checkDigit = sum % 11;

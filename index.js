@@ -6,6 +6,7 @@
 
 const { generateBSN, generateMultipleBSN, isValidBSN } = require('./src/bsnGenerator');
 const { generateIBAN, generateMultipleIBAN, formatIBAN, isValidIBAN, DUTCH_BANK_CODES } = require('./src/ibanGenerator');
+const { generateLoonheffingennummer, generateMultipleLoonheffingennummer, isValidLoonheffingennummer } = require('./src/loonheffingennummerGenerator');
 
 // CLI functionality
 function printHelp() {
@@ -16,11 +17,13 @@ Usage:
   node index.js <command> [options]
 
 Commands:
-  bsn [count]           Generate BSN number(s)
-  iban [count] [bank]   Generate IBAN number(s)
-  validate-bsn <number> Validate a BSN number
-  validate-iban <iban>  Validate an IBAN number
-  help                  Show this help message
+  bsn [count]                      Generate BSN number(s)
+  iban [count] [bank]              Generate IBAN number(s)
+  loonheffingennummer [count]      Generate Loonheffingennummer(s)
+  validate-bsn <number>            Validate a BSN number
+  validate-iban <iban>             Validate an IBAN number
+  validate-loonheffingennummer <n> Validate a Loonheffingennummer
+  help                             Show this help message
 
 Options:
   count   Number of test numbers to generate (default: 1)
@@ -28,12 +31,15 @@ Options:
           Available banks: ${DUTCH_BANK_CODES.join(', ')}
 
 Examples:
-  node index.js bsn              Generate 1 BSN
-  node index.js bsn 5            Generate 5 BSNs
-  node index.js iban             Generate 1 IBAN
-  node index.js iban 3 INGB      Generate 3 ING Bank IBANs
+  node index.js bsn                        Generate 1 BSN
+  node index.js bsn 5                      Generate 5 BSNs
+  node index.js iban                       Generate 1 IBAN
+  node index.js iban 3 INGB                Generate 3 ING Bank IBANs
+  node index.js loonheffingennummer        Generate 1 Loonheffingennummer
+  node index.js loonheffingennummer 5      Generate 5 Loonheffingennummers
   node index.js validate-bsn 123456782
   node index.js validate-iban NL91ABNA0417164300
+  node index.js validate-loonheffingennummer 111111110
 `);
 }
 
@@ -94,6 +100,26 @@ function main() {
       break;
     }
 
+    case 'loonheffingennummer': {
+      const count = parseInt(args[1], 10) || 1;
+      const loonheffingennummers = generateMultipleLoonheffingennummer(count);
+      console.log('\nGenerated Loonheffingennummer(s):');
+      loonheffingennummers.forEach(lhn => console.log(`  ${lhn}`));
+      console.log();
+      break;
+    }
+
+    case 'validate-loonheffingennummer': {
+      const lhn = args[1];
+      if (!lhn) {
+        console.error('Please provide a Loonheffingennummer to validate');
+        process.exit(1);
+      }
+      const isValid = isValidLoonheffingennummer(lhn);
+      console.log(`\nLoonheffingennummer ${lhn} is ${isValid ? 'VALID ✓' : 'INVALID ✗'}\n`);
+      break;
+    }
+
     default:
       console.error(`Unknown command: ${command}`);
       printHelp();
@@ -112,7 +138,11 @@ module.exports = {
   generateMultipleIBAN,
   formatIBAN,
   isValidIBAN,
-  DUTCH_BANK_CODES
+  DUTCH_BANK_CODES,
+  // Loonheffingennummer functions
+  generateLoonheffingennummer,
+  generateMultipleLoonheffingennummer,
+  isValidLoonheffingennummer
 };
 
 // Run CLI if executed directly

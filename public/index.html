@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dutch Test Numbers - BSN & IBAN Generator</title>
+    <title>Dutch Test Numbers - BSN, IBAN & Loonheffingennummer Generator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>🇳🇱 Dutch Test Numbers</h1>
-            <p class="subtitle">Generate valid BSN and IBAN numbers for testing</p>
+            <p class="subtitle">Generate valid BSN, IBAN and Loonheffingennummer numbers for testing</p>
         </header>
 
         <main class="generators-grid">
@@ -87,10 +87,47 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Loonheffingennummer Generator -->
+            <section class="generator-section">
+                <div class="card generator-card">
+                    <h2 class="card-title">Loonheffingennummer Generator</h2>
+                    <form id="loonheffingennummerForm" class="generator-form">
+                        <label for="loonheffingennummerCount">How many?</label>
+                        <input type="number" id="loonheffingennummerCount" min="1" max="50" value="1">
+                        <button type="submit" class="generate-btn loonheffingennummer-btn">
+                            Generate Loonheffingennummer
+                        </button>
+                    </form>
+                    
+                    <div id="loonheffingennummerResult" class="result">
+                        <span class="label">Latest Loonheffingennummer:</span>
+                        <span id="currentLoonheffingennummer" class="value-display">—</span>
+                        <button id="copyLoonheffingennummerBtn" class="copy-btn" title="Copy to clipboard" disabled>
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card history-card">
+                    <h2>Loonheffingennummer History</h2>
+                    <ul id="loonheffingennummerHistoryList" class="history-list">
+                        <li class="empty-state">No Loonheffingennummers generated yet</li>
+                    </ul>
+                    <div class="history-actions">
+                        <button id="copyAllLoonheffingennummerBtn" class="action-btn copy-all-btn" disabled>
+                            📋 Copy All
+                        </button>
+                        <button id="eraseLoonheffingennummerBtn" class="action-btn erase-btn" disabled>
+                            🗑️ Erase
+                        </button>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer>
-            <p>Generated BSNs pass the Dutch 11-test. IBANs pass modulo 97 validation.</p>
+            <p>Generated BSNs pass the Dutch 11-test. IBANs pass modulo 97 validation. Loonheffingennummers pass modulo 11 validation.</p>
             <p class="disclaimer">For testing purposes only.</p>
         </footer>
     </div>

@@ -27,9 +27,19 @@
     const copyAllIbanBtn = document.getElementById('copyAllIbanBtn');
     const eraseIbanBtn = document.getElementById('eraseIbanBtn');
 
+    // DOM Elements - Loonheffingennummer
+    const loonheffingennummerForm = document.getElementById('loonheffingennummerForm');
+    const loonheffingennummerCountInput = document.getElementById('loonheffingennummerCount');
+    const currentLoonheffingennummerEl = document.getElementById('currentLoonheffingennummer');
+    const copyLoonheffingennummerBtn = document.getElementById('copyLoonheffingennummerBtn');
+    const loonheffingennummerHistoryList = document.getElementById('loonheffingennummerHistoryList');
+    const copyAllLoonheffingennummerBtn = document.getElementById('copyAllLoonheffingennummerBtn');
+    const eraseLoonheffingennummerBtn = document.getElementById('eraseLoonheffingennummerBtn');
+
     // State
     let bsnHistory = [];
     let ibanHistory = [];
+    let loonheffingennummerHistory = [];
 
     // ========================
     // BSN Generator Functions
@@ -168,6 +178,67 @@
         return mod97(numeric) === 1;
     }
 
+    // ==========================================
+    // Loonheffingennummer Generator Functions
+    // ==========================================
+
+    // Weights for modulus-11 validation
+    const LOONHEFFINGENNUMMER_WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2];
+
+    /**
+     * Generates a valid Loonheffingennummer using the modulus-11 test
+     * @returns {string} A valid 9-digit Loonheffingennummer
+     */
+    function generateLoonheffingennummer() {
+        while (true) {
+            const digits = [];
+
+            for (let i = 0; i < 8; i++) {
+                if (i === 0) {
+                    digits.push(Math.floor(Math.random() * 9) + 1);
+                } else {
+                    digits.push(Math.floor(Math.random() * 10));
+                }
+            }
+
+            let sum = 0;
+            for (let i = 0; i < 8; i++) {
+                sum += digits[i] * LOONHEFFINGENNUMMER_WEIGHTS[i];
+            }
+
+            const checkDigit = sum % 11;
+
+            if (checkDigit > 9) {
+                continue;
+            }
+
+            digits.push(checkDigit);
+            return digits.join('');
+        }
+    }
+
+    /**
+     * Validates a Loonheffingennummer using the modulus-11 test
+     * @param {string} loonheffingennummer - The number to validate (9 digits)
+     * @returns {boolean} True if valid
+     */
+    function isValidLoonheffingennummer(loonheffingennummer) {
+        if (!/^\d{9}$/.test(loonheffingennummer)) {
+            return false;
+        }
+
+        const digits = loonheffingennummer.split('').map(Number);
+
+        let sum = 0;
+        for (let i = 0; i < 8; i++) {
+            sum += digits[i] * LOONHEFFINGENNUMMER_WEIGHTS[i];
+        }
+
+        const remainder = sum % 11;
+
+        return digits[8] === remainder;
+    }
+
     // ======================
     // UI Update Functions
     // ======================
@@ -188,6 +259,15 @@
     function displayIBAN(iban) {
         currentIbanEl.textContent = formatIBAN(iban);
         copyIbanBtn.disabled = false;
+    }
+
+    /**
+     * Updates the UI to display the current Loonheffingennummer
+     * @param {string} loonheffingennummer - The Loonheffingennummer to display
+     */
+    function displayLoonheffingennummer(loonheffingennummer) {
+        currentLoonheffingennummerEl.textContent = loonheffingennummer;
+        copyLoonheffingennummerBtn.disabled = false;
     }
 
     /**
@@ -222,6 +302,23 @@
 
         renderIBANHistory();
         updateIBANButtons();
+    }
+
+    /**
+     * Adds Loonheffingennummers to the history list
+     * @param {string[]} loonheffingennummers - Array of Loonheffingennummers to add
+     */
+    function addLoonheffingennummersToHistory(loonheffingennummers) {
+        loonheffingennummers.forEach(lhn => {
+            loonheffingennummerHistory.unshift(lhn);
+        });
+
+        if (loonheffingennummerHistory.length > 50) {
+            loonheffingennummerHistory = loonheffingennummerHistory.slice(0, 50);
+        }
+
+        renderLoonheffingennummerHistory();
+        updateLoonheffingennummerButtons();
     }
 
     /**
@@ -291,6 +388,39 @@
     }
 
     /**
+     * Renders the Loonheffingennummer history list in the DOM
+     */
+    function renderLoonheffingennummerHistory() {
+        loonheffingennummerHistoryList.innerHTML = '';
+
+        if (loonheffingennummerHistory.length === 0) {
+            const emptyItem = document.createElement('li');
+            emptyItem.className = 'empty-state';
+            emptyItem.textContent = 'No Loonheffingennummers generated yet';
+            loonheffingennummerHistoryList.appendChild(emptyItem);
+            return;
+        }
+
+        loonheffingennummerHistory.forEach((lhn, index) => {
+            const li = document.createElement('li');
+            if (index === 0) {
+                li.className = 'new-item';
+            }
+
+            const lhnSpan = document.createElement('span');
+            lhnSpan.textContent = lhn;
+
+            const indexSpan = document.createElement('span');
+            indexSpan.className = 'history-index';
+            indexSpan.textContent = `#${index + 1}`;
+
+            li.appendChild(lhnSpan);
+            li.appendChild(indexSpan);
+            loonheffingennummerHistoryList.appendChild(li);
+        });
+    }
+
+    /**
      * Updates BSN action buttons state
      */
     function updateBSNButtons() {
@@ -306,6 +436,15 @@
         const hasItems = ibanHistory.length > 0;
         copyAllIbanBtn.disabled = !hasItems;
         eraseIbanBtn.disabled = !hasItems;
+    }
+
+    /**
+     * Updates Loonheffingennummer action buttons state
+     */
+    function updateLoonheffingennummerButtons() {
+        const hasItems = loonheffingennummerHistory.length > 0;
+        copyAllLoonheffingennummerBtn.disabled = !hasItems;
+        eraseLoonheffingennummerBtn.disabled = !hasItems;
     }
 
     /**
@@ -328,6 +467,17 @@
         copyIbanBtn.disabled = true;
         renderIBANHistory();
         updateIBANButtons();
+    }
+
+    /**
+     * Erases the Loonheffingennummer history
+     */
+    function eraseLoonheffingennummerHistory() {
+        loonheffingennummerHistory = [];
+        currentLoonheffingennummerEl.textContent = '—';
+        copyLoonheffingennummerBtn.disabled = true;
+        renderLoonheffingennummerHistory();
+        updateLoonheffingennummerButtons();
     }
 
     // ======================
@@ -392,6 +542,15 @@
     }
 
     /**
+     * Copies current Loonheffingennummer to clipboard
+     */
+    function copyCurrentLoonheffingennummer() {
+        const lhn = currentLoonheffingennummerEl.textContent;
+        if (lhn === '—') return;
+        copyWithFeedback(lhn, copyLoonheffingennummerBtn, '📋');
+    }
+
+    /**
      * Copies all BSNs to clipboard
      */
     function copyAllBSNs() {
@@ -407,6 +566,15 @@
         if (ibanHistory.length === 0) return;
         const text = ibanHistory.join('\n');
         copyWithFeedback(text, copyAllIbanBtn, '📋 Copy All');
+    }
+
+    /**
+     * Copies all Loonheffingennummers to clipboard
+     */
+    function copyAllLoonheffingennummers() {
+        if (loonheffingennummerHistory.length === 0) return;
+        const text = loonheffingennummerHistory.join('\n');
+        copyWithFeedback(text, copyAllLoonheffingennummerBtn, '📋 Copy All');
     }
 
     // ======================
@@ -461,6 +629,30 @@
         }
     }
 
+    /**
+     * Handles Loonheffingennummer form submission
+     * @param {Event} e - Form submit event
+     */
+    function handleLoonheffingennummerGenerate(e) {
+        e.preventDefault();
+
+        const count = Math.min(Math.max(parseInt(loonheffingennummerCountInput.value, 10) || 1, 1), 50);
+        loonheffingennummerCountInput.value = count;
+
+        const loonheffingennummers = [];
+        for (let i = 0; i < count; i++) {
+            const lhn = generateLoonheffingennummer();
+            if (isValidLoonheffingennummer(lhn)) {
+                loonheffingennummers.push(lhn);
+            }
+        }
+
+        if (loonheffingennummers.length > 0) {
+            displayLoonheffingennummer(loonheffingennummers[0]);
+            addLoonheffingennummersToHistory(loonheffingennummers);
+        }
+    }
+
     // ======================
     // Event Listeners
     // ======================
@@ -477,12 +669,20 @@
     copyAllIbanBtn.addEventListener('click', copyAllIBANs);
     eraseIbanBtn.addEventListener('click', eraseIBANHistory);
 
+    // Loonheffingennummer events
+    loonheffingennummerForm.addEventListener('submit', handleLoonheffingennummerGenerate);
+    copyLoonheffingennummerBtn.addEventListener('click', copyCurrentLoonheffingennummer);
+    copyAllLoonheffingennummerBtn.addEventListener('click', copyAllLoonheffingennummers);
+    eraseLoonheffingennummerBtn.addEventListener('click', eraseLoonheffingennummerHistory);
+
     // ======================
     // Initialization
     // ======================
 
     renderBSNHistory();
     renderIBANHistory();
+    renderLoonheffingennummerHistory();
     updateBSNButtons();
     updateIBANButtons();
+    updateLoonheffingennummerButtons();
 })();

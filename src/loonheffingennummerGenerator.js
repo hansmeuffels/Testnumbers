@@ -32,33 +32,35 @@ function isValidLoonheffingennummer(loonheffingennummer) {
  * @returns {string} - A valid 9-digit Loonheffingennummer
  */
 function generateLoonheffingennummer() {
-  // Generate first 8 random digits
-  const digits = [];
-  for (let i = 0; i < 8; i++) {
-    // First digit should not be 0
-    if (i === 0) {
-      digits.push(Math.floor(Math.random() * 9) + 1);
-    } else {
-      digits.push(Math.floor(Math.random() * 10));
+  while (true) {
+    // Generate first 8 random digits
+    const digits = [];
+    for (let i = 0; i < 8; i++) {
+      // First digit should not be 0
+      if (i === 0) {
+        digits.push(Math.floor(Math.random() * 9) + 1);
+      } else {
+        digits.push(Math.floor(Math.random() * 10));
+      }
     }
+    
+    // Calculate the 9th digit (check digit) using modulus-11
+    const weights = [9, 8, 7, 6, 5, 4, 3, 2];
+    let sum = 0;
+    for (let i = 0; i < 8; i++) {
+      sum += digits[i] * weights[i];
+    }
+    
+    const checkDigit = sum % 11;
+    
+    // If check digit is 10, we need to regenerate (since it must be a single digit)
+    if (checkDigit > 9) {
+      continue;
+    }
+    
+    digits.push(checkDigit);
+    return digits.join('');
   }
-  
-  // Calculate the 9th digit (check digit) using modulus-11
-  const weights = [9, 8, 7, 6, 5, 4, 3, 2];
-  let sum = 0;
-  for (let i = 0; i < 8; i++) {
-    sum += digits[i] * weights[i];
-  }
-  
-  const checkDigit = sum % 11;
-  
-  // If check digit is 10, we need to regenerate (since it must be a single digit)
-  if (checkDigit > 9) {
-    return generateLoonheffingennummer();
-  }
-  
-  digits.push(checkDigit);
-  return digits.join('');
 }
 
 /**

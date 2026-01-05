@@ -4,19 +4,13 @@ describe('Loonheffingennummer Generator', () => {
   describe('isValidLoonheffingennummer', () => {
     test('should validate correct Loonheffingennummer numbers', () => {
       // Test with manually calculated valid numbers
-      // Example: 123456780
-      // Sum = 1*9 + 2*8 + 3*7 + 4*6 + 5*5 + 6*4 + 7*3 + 8*2
-      //     = 9 + 16 + 21 + 24 + 25 + 24 + 21 + 16 = 156
-      // 156 % 11 = 2, but we need check digit 0
-      // Let me recalculate: 111111110
-      // Sum = 1*9 + 1*8 + 1*7 + 1*6 + 1*5 + 1*4 + 1*3 + 1*2
-      //     = 9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 = 44
+      // Example: 111111110
+      // Sum = 1*9 + 1*8 + 1*7 + 1*6 + 1*5 + 1*4 + 1*3 + 1*2 = 44
       // 44 % 11 = 0, so check digit should be 0
       expect(isValidLoonheffingennummer('111111110')).toBe(true);
       
-      // Another example: 123456785
-      // Sum = 1*9 + 2*8 + 3*7 + 4*6 + 5*5 + 6*4 + 7*3 + 8*2
-      //     = 9 + 16 + 21 + 24 + 25 + 24 + 21 + 16 = 156
+      // Example: 123456782
+      // Sum = 1*9 + 2*8 + 3*7 + 4*6 + 5*5 + 6*4 + 7*3 + 8*2 = 156
       // 156 % 11 = 2, so check digit should be 2
       expect(isValidLoonheffingennummer('123456782')).toBe(true);
     });

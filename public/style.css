@@ -36,7 +36,7 @@ body {
 /* Container */
 .container {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1400px;
     padding-top: 20px;
 }
 
@@ -59,10 +59,10 @@ header h1 {
     opacity: 0.9;
 }
 
-/* Generators Grid - Side by Side Layout */
+/* Generators Grid - Three Column Layout */
 .generators-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
 }
 
@@ -151,6 +151,15 @@ header h1 {
 
 .generate-btn.iban-btn:hover {
     box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6);
+}
+
+.generate-btn.loonheffingennummer-btn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+.generate-btn.loonheffingennummer-btn:hover {
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
 }
 
 /* Result Display */
@@ -357,6 +366,12 @@ footer {
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .generators-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .generators-grid {
         grid-template-columns: 1fr;

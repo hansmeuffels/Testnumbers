@@ -8,15 +8,23 @@ const LOONHEFFINGENNUMMER_WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2];
 
 /**
  * Validates a Loonheffingennummer using the modulus-11 test
- * @param {string} loonheffingennummer - The number to validate (9 digits)
+ * @param {string} loonheffingennummer - The number to validate (9 digits + L01 suffix)
  * @returns {boolean} - True if valid
  */
 function isValidLoonheffingennummer(loonheffingennummer) {
-  if (!/^\d{9}$/.test(loonheffingennummer)) {
+  // Must end with L01
+  if (!loonheffingennummer.endsWith('L01')) {
+    return false;
+  }
+  
+  // Extract the 9 digits before L01
+  const numericPart = loonheffingennummer.slice(0, -3);
+  
+  if (!/^\d{9}$/.test(numericPart)) {
     return false;
   }
 
-  const digits = loonheffingennummer.split('').map(Number);
+  const digits = numericPart.split('').map(Number);
   
   let sum = 0;
   for (let i = 0; i < 8; i++) {
@@ -31,7 +39,7 @@ function isValidLoonheffingennummer(loonheffingennummer) {
 
 /**
  * Generates a valid Loonheffingennummer
- * @returns {string} - A valid 9-digit Loonheffingennummer
+ * @returns {string} - A valid 9-digit Loonheffingennummer with L01 suffix
  */
 function generateLoonheffingennummer() {
   while (true) {
@@ -60,7 +68,7 @@ function generateLoonheffingennummer() {
     }
     
     digits.push(checkDigit);
-    return digits.join('');
+    return digits.join('') + 'L01';
   }
 }
 

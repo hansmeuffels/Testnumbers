@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Dice background -->
+  <rect x="10" y="10" width="80" height="80" rx="12" ry="12" fill="#ffffff" stroke="#333333" stroke-width="3"/>
+  
+  <!-- Dice dots (showing 5 - a classic dice face) -->
+  <!-- Top left dot -->
+  <circle cx="30" cy="30" r="6" fill="#333333"/>
+  
+  <!-- Top right dot -->
+  <circle cx="70" cy="30" r="6" fill="#333333"/>
+  
+  <!-- Center dot -->
+  <circle cx="50" cy="50" r="6" fill="#333333"/>
+  
+  <!-- Bottom left dot -->
+  <circle cx="30" cy="70" r="6" fill="#333333"/>
+  
+  <!-- Bottom right dot -->
+  <circle cx="70" cy="70" r="6" fill="#333333"/>
+</svg>

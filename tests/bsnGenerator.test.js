@@ -41,6 +41,23 @@ describe('BSN Generator', () => {
         expect(bsn[0]).not.toBe('0');
       }
     });
+
+    test('should not start with 8 or 9', () => {
+      for (let i = 0; i < 100; i++) {
+        const bsn = generateBSN();
+        expect(bsn[0]).not.toBe('8');
+        expect(bsn[0]).not.toBe('9');
+      }
+    });
+
+    test('should only start with digits 1-7', () => {
+      for (let i = 0; i < 100; i++) {
+        const bsn = generateBSN();
+        const firstDigit = parseInt(bsn[0], 10);
+        expect(firstDigit).toBeGreaterThanOrEqual(1);
+        expect(firstDigit).toBeLessThanOrEqual(7);
+      }
+    });
   });
 
   describe('generateMultipleBSN', () => {

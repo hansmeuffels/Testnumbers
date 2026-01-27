@@ -47,6 +47,7 @@
 
     /**
      * Generates a valid BSN number using the 11-test
+     * The first digit is constrained to be 1-7 (not 0, 8, or 9)
      * @returns {string} A valid 9-digit BSN
      */
     function generateBSN() {
@@ -57,7 +58,8 @@
 
             for (let i = 0; i < 8; i++) {
                 if (i === 0) {
-                    digits.push(Math.floor(Math.random() * 9) + 1);
+                    // First digit must be 1-7 (not 0, 8, or 9)
+                    digits.push(Math.floor(Math.random() * 7) + 1);
                 } else {
                     digits.push(Math.floor(Math.random() * 10));
                 }
